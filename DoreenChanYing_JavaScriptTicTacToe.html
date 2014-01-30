@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style type="text/css">
+.box {
+	width: 80px;
+	height: 80px;
+	padding: 5px;
+	border: 2px solid #aaaaaa;
+	float: left;
+}
+.centre {
+	margin-left: auto;
+    margin-right: auto;
+}
+body {
+	background-image: url('background.jpg');
+}
+</style>
+<script type="text/javascript">
+var count = 0;
+var winner = false;
+var gameOn = true;
+function allowDrop(ev) {
+	ev.preventDefault();
+}
+function drag(ev) {
+	ev.dataTransfer.setData("Text",ev.target.id);
+}
+
+function colourChange(message, colour, a, b, c) {
+	gameOn = false; 
+	winner = true;
+	a.style.backgroundColor = colour;
+	b.style.backgroundColor = colour;
+	c.style.backgroundColor = colour;
+	msg.innerHTML = message + " <button type='button' onclick='window.location.reload(true);' >Play again?</button>";
+}
+function drop(ev) {
+	var data = ev.dataTransfer.getData("Text");
+	var id = ev.target.getAttribute("id");
+	if (id == "div1" || id == "div2" || id == "div3" || id == "div4" || id == "div5" || id == "div6" || id == "div7" || id == "div8" || id == "div9") {		
+		switch (data) {
+			case "X1": case "X2": case "X3": case "X4": case "X5":
+				if (gameOn == true) {
+					if (count % 2 == 0) {
+						ev.target.appendChild(document.getElementById(data));
+						ev.target.style.backgroundColor = 'cyan';
+						ev.target.setAttribute("selected", true);
+						msg.innerHTML = "It's Green's turn.";
+						count++;
+					} else {
+						msg.innerHTML = "Hey, it's Green's turn.";
+					}
+				} else {
+					var answer = confirm ("Game over. Play again?"); 
+					if (answer){
+						window.location.reload(true);
+					}
+				}
+				break;
+			case "O1": case "O2": case "O3": case "O4": case "O5":
+				if (gameOn == true) {
+					if (count == 0) {
+						msg.innerHTML = "Red goes first.";
+						break;
+					} 
+					if (count % 2 != 0) {
+						ev.target.appendChild(document.getElementById(data));
+						ev.target.style.backgroundColor = 'yellow';
+						ev.target.setAttribute("selected", false);
+						msg.innerHTML = "It's Red's turn.";
+						count++;
+					} else {
+						msg.innerHTML = "Hey, it's Red's turn.";
+					}	
+				} else {
+					var answer = confirm ("Game over. Play again?"); 
+					if (answer){
+						window.location.reload(true);
+					}
+				}
+				break;
+		}
+		
+		ev.preventDefault();
+	}
+	var array = new Array();
+	array[0] = document.getElementById("div1").getAttribute("selected");
+	array[1] = document.getElementById("div2").getAttribute("selected");
+	array[2] = document.getElementById("div3").getAttribute("selected");
+	array[3] = document.getElementById("div4").getAttribute("selected");
+	array[4] = document.getElementById("div5").getAttribute("selected");
+	array[5] = document.getElementById("div6").getAttribute("selected");
+	array[6] = document.getElementById("div7").getAttribute("selected");
+	array[7] = document.getElementById("div8").getAttribute("selected");
+	array[8] = document.getElementById("div9").getAttribute("selected");
+	
+	if (array[0] == "true" && array[1] == "true" && array[2] =="true") {
+		colourChange("Red wins!", 'red', div1, div2, div3);
+	}
+	else if (array[0] == "false" && array[1] == "false" && array[2] == "false") {
+		colourChange("Green wins!", '#00FF00', div1, div2, div3);
+	}
+	if (array[3] == "true" && array[4] == "true" && array[5] == "true") {
+		colourChange("Red wins!", 'red', div4, div5, div6);
+	}
+	else if (array[3] == "false" && array[4] == "false" && array[5] == "false") {
+		colourChange("Green wins!", '00FF00', div4, div5, div6);
+	}
+	if (array[6] == "true" && array[7] == "true" && array[8] == "true") {
+		colourChange("Red wins!", 'red', div7, div8, div9);
+	}
+	else if (array[6] == "false" && array[7] == "false" && array[8] == "false") {
+		colourChange("Green wins!", '#00FF00', div7, div8, div9);
+	}
+	if (array[0] == "true" && array[3] == "true" && array[6] == "true") {
+		colourChange("Red wins!", 'red', div1, div4, div7);
+	}
+	else if (array[0] == "false" && array[3] == "false" && array[6] == "false") {
+		colourChange("Green wins!", '#00FF00', div1, div4, div7);
+	}
+	if (array[1] == "true" && array[4] == "true" && array[7] == "true") {
+		colourChange("Red wins!", 'red', div2, div5, div8);
+	}
+	else if (array[1] == "false" && array[4] == "false" && array[7] == "false") {
+		colourChange("Green wins!", '#00FF00', div2, div5, div8);
+	}
+	if (array[2] == "true" && array[5] == "true" && array[8] == "true") {
+		colourChange("Red wins!", 'red', div3, div6, div9);
+	}
+	else if (array[2] == "false" && array[5] == "false" && array[8] == "false") {
+		colourChange("Green wins!", '#00FF00', div3, div6, div9);
+	}
+	if (array[0] == "true" && array[4] == "true" && array[8] == "true") {
+		colourChange("Red wins!", 'red', div1, div5, div9);
+	}
+	else if (array[0] == "false" && array[4] == "false" && array[8] == "false") {
+		colourChange("Green wins!", '#00FF00', div1, div5, div9);
+	}
+	if (array[2] == "true" && array[4] == "true" && array[6] == "true") {
+		colourChange("Red wins!", 'red', div3, div5, div7);
+	}
+	else if (array[2] == "false" && array[4] == "false" && array[6] == "false") {
+		colourChange("Green wins!", '#00FF00', div3, div5, div7);
+	}
+	if(winner == false && array[0] != null && array[1] != null && array[2] != null && array[3] != null && array[4] != null && array[5] != null && array[6] != null && array[7] != null && array[8] != null) {
+		gameOn = false; 
+		msg.innerHTML = "Draw!" + " <button type='button' onclick='window.location.reload(true);' >Play again?</button>";
+	}	
+}
+
+</script>
+<link href="tictac_css.css" rel="stylesheet" type="text/css" media="screen" />
+<title>JavaScript  Drag &amp; Drop Tic-Tac-Toe by Doreen Chan-Ying</title>
+<meta charset="UTF-8">
+</head>
+<body>
+	<table class="centre">
+		<tr>
+			<td><img src="title.png" alt="title"></td>
+		</tr>
+		<tr>
+			<td style="text-align: center; font-family:arial;color:#000000;font-size:20px; height:30px" id="msg">Drag the red & green mushrooms into the grid. Red goes first.</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td style="width:155px;">
+							<img id="X1" src="X.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="X1" />
+							<img id="X2" src="X.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="X2" />
+						</td>
+						<td><div id="div1" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td><div id="div2" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td><div id="div3" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td width="155">
+							<img id="O1" src="O.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="O1" />
+							<img id="O2" src="O.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="O2" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<img id="X3" src="X.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="X3" />
+							<img id="X4" src="X.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="X4" />
+						</td>
+						<td><div id="div4" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td><div id="div5" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td><div id="div6" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td>
+							<img id="O3" src="O.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="O3" />
+							<img id="O4" src="O.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="O4" />
+						</td>
+					</tr>
+					<tr>
+						<td align="right">
+							<img id="X5" src="X.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="X5" />
+						</td>
+						<td><div id="div7" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td><div id="div8" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td><div id="div9" class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+						<td>
+							<img id="O5" src="O.png" draggable="true" ondragstart="drag(event)" width="75" height="75" alt="O5" />
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
